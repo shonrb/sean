@@ -69,6 +69,20 @@ def multiply_mat4_vec3(mat, vec):
         res /= w
     return res[:3]
 
+def render_triangle(screen, tri, rot_mat):
+    verts = []
+    for vert in tri.verts:
+        rotated = multiply_mat4_vec3(rot_mat, vert)
+        translated = rotated + np.array([0, 0, -6])
+        proj = multiply_mat4_vec3(PROJECTION_MATRIX, translated)
+        
+        verts.append(np.array([
+            float((proj[0] + 1) * 0.5 * BUFFER_WIDTH),
+            float((proj[1] + 1) * 0.5 * BUFFER_HEIGHT),
+            proj[2]
+        ]))
+    screen.draw_triangle(verts, tri.colour)
+
 def main():
     screen = Screen(BUFFER_WIDTH, BUFFER_HEIGHT, Colour(0, 0, 0))
     theta = 0
@@ -79,23 +93,15 @@ def main():
 
     for i in range(200):
         os.system("clear")
+        rot_mat = rotation_matrix(theta, theta * 0.5, theta * 0.25)
+
         for tri in model:
-            verts = []
-            for vert in tri.verts:
-                rotmat = rotation_matrix(theta, theta * 0.5, theta * 0.25)
-                rotated = multiply_mat4_vec3(rotmat, vert)
-                translated = rotated + np.array([0, 0, -6])
-                proj = multiply_mat4_vec3(PROJECTION_MATRIX, translated)
-                
-                verts.append(np.array([
-                    float((proj[0] + 1) * 0.5 * BUFFER_WIDTH),
-                    float((proj[1] + 1) * 0.5 * BUFFER_HEIGHT),
-                    proj[2]
-                ]))
-            screen.draw_triangle(verts, tri.colour)
+            render_triangle(screen, tri, rot_mat)
+
         screen.print()
-        theta += 0.05
         screen.clear()
+
+        theta += 0.05
         time.sleep(0.08)
 
 if __name__ == "__main__":
