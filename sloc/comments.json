@@ -1,0 +1,650 @@
+{
+    "adb": [
+        {
+            "type": "inline",
+            "open": "--"
+        }
+    ],
+    "ads": [
+        {
+            "type": "inline",
+            "open": "--"
+        }
+    ],
+    "applescript": [
+        {
+            "type": "inline",
+            "open": "--"
+        },
+        {
+            "type": "block",
+            "open": "(*",
+            "close": "*)",
+            "nestable": false
+        }
+    ],
+    "bas": [
+        {
+            "type": "inline",
+            "open": "'"
+        }
+    ],
+    "vbs": [
+        {
+            "type": "inline",
+            "open": "'"
+        }
+    ],
+    "vb": [
+        {
+            "type": "inline",
+            "open": "'"
+        }
+    ],
+    "c": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "h": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "cpp": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "hpp": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "C": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "H": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "cc": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "hh": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "#if 0",
+            "close": "#endif",
+            "nestable": false
+        }
+    ],
+    "hs": [
+        {
+            "type": "inline",
+            "open": "--"
+        },
+        {
+            "type": "block",
+            "open": "{-",
+            "close": "-}",
+            "nestable": true
+        }
+    ],
+    "java": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "js": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "ts": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "lua": [
+        {
+            "type": "inline",
+            "open": "--"
+        },
+        {
+            "type": "block",
+            "open": "--[[",
+            "close": "]]--",
+            "nestable": false
+        }
+    ],
+    "mat": [
+        {
+            "type": "inline",
+            "open": "%"
+        },
+        {
+            "type": "block",
+            "open": "%{",
+            "close": "}%",
+            "nestable": true
+        }
+    ],
+    "nim": [
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "inline",
+            "open": "##"
+        },
+        {
+            "type": "block",
+            "open": "#[",
+            "close": "]#",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "##[",
+            "close": "]##",
+            "nestable": false
+        }
+    ],
+    "nims": [
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "inline",
+            "open": "##"
+        },
+        {
+            "type": "block",
+            "open": "#[",
+            "close": "]#",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "##[",
+            "close": "]##",
+            "nestable": false
+        }
+    ],
+    "ml": [
+        {
+            "type": "block",
+            "open": "(*",
+            "close": "*)",
+            "nestable": true
+        }
+    ],
+    "mli": [
+        {
+            "type": "block",
+            "open": "(*",
+            "close": "*)",
+            "nestable": true
+        }
+    ],
+    "pas": [
+        {
+            "type": "block",
+            "open": "(*",
+            "close": "*)",
+            "nestable": false
+        }
+    ],
+    "pp": [
+        {
+            "type": "block",
+            "open": "(*",
+            "close": "*)",
+            "nestable": false
+        }
+    ],
+    "r": [
+        {
+            "type": "inline",
+            "open": "#"
+        }
+    ],
+    "php": [
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "py": [
+        {
+            "type": "inline",
+            "open": "#"
+        }
+    ],
+    "rb": [
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "block",
+            "open": "=begin",
+            "close": "=end",
+            "nestable": false
+        }
+    ],
+    "sql": [
+        {
+            "type": "inline",
+            "open": "--"
+        },
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "swift": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": true
+        }
+    ],
+    "bat": [
+        {
+            "type": "inline",
+            "open": "::"
+        },
+        {
+            "type": "inline",
+            "open": "REM"
+        }
+    ],
+    "rs": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "ijs": [
+        {
+            "type": "inline",
+            "open": "NB."
+        }
+    ],
+    "cs": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "lisp": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "#|",
+            "close": "|#",
+            "nestable": true
+        }
+    ],
+    "lsp": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "#|",
+            "close": "|#",
+            "nestable": true
+        }
+    ],
+    "l": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "#|",
+            "close": "|#",
+            "nestable": true
+        }
+    ],
+    "el": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "#|",
+            "close": "|#",
+            "nestable": true
+        }
+    ],
+    "scm": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "#|",
+            "close": "|#",
+            "nestable": true
+        }
+    ],
+    "ss": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "#|",
+            "close": "|#",
+            "nestable": true
+        }
+    ],
+    "S": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "inline",
+            "open": "/"
+        },
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "s": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "inline",
+            "open": "#"
+        },
+        {
+            "type": "inline",
+            "open": "/"
+        }
+    ],
+    "sc": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": true
+        }
+    ],
+    "scala": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": true
+        }
+    ],
+    "sh": [
+        {
+            "type": "inline",
+            "open": "#"
+        }
+    ],
+    "clj": [
+        {
+            "type": "inline",
+            "open": ";"
+        },
+        {
+            "type": "block",
+            "open": "(",
+            "close": ")",
+            "nestable": false
+        }
+    ],
+    "kt": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "d": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        },
+        {
+            "type": "block",
+            "open": "/+",
+            "close": "+/",
+            "nestable": true
+        }
+    ],
+    "go": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ],
+    "dart": [
+        {
+            "type": "inline",
+            "open": "//"
+        },
+        {
+            "type": "block",
+            "open": "/*",
+            "close": "*/",
+            "nestable": false
+        }
+    ]
+}
