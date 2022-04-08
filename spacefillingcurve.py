@@ -11,13 +11,10 @@ QUAD_SIZE = 0.5
 COORDS = ((-0.5, -0.5), (-0.5, 0.5), (0.5, 0.5), (0.5, -0.5))
 INDICES = (0, 1, 2, 3)
 
-def flip_left(indices):
-    a, b, c, d = indices
-    return a, d, c, b
-
-def flip_right(indices):
-    a, b, c, d = indices
-    return c, b, a, d
+def swap_indices(indices, a, b):
+    new = [i for i in indices]
+    new[a], new[b] = new[b], new[a]
+    return tuple(new)
 
 def hilbert_order_1(x, y, size):
     mag = size * 0.5
@@ -43,10 +40,10 @@ def hilbert_order_n(order, size, coords, indices):
     a, b, c, d = [hilbert_order_1(x, y, n_size) for x, y in curve]
 
     return [
-        *make_seg(a, flip_left(indices)),
+        *make_seg(a, swap_indices(indices, 1, 3)),
         *make_seg(b, indices),
         *make_seg(c, indices),
-        *make_seg(d, flip_right(indices))
+        *make_seg(d, swap_indices(indices, 0, 2))
     ]
 
 def hilbert(order):
