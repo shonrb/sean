@@ -8,7 +8,8 @@ import json
 from sys import argv
 from os import path, scandir
 
-with open("comments.json") as f:
+PATH = os.path.dirname(os.path.abspath(__file__)
+with open(PATH + "comments.json") as f:
     COMMENTS_BY_LANGUAGE = json.load(f)
 
 class CommentChecker:
