@@ -1,103 +1,125 @@
-''' painter.py 
-    A beam search program to reproduce images with rectangles.
-    Usage: python3 painter.py [image]
-'''
-import os
-import sys
-import random
-import math
+#!/usr/bin/env python3
+import random as rnd
 import numpy as np
-from collections import namedtuple
-from PIL import Image, ImageDraw, ImageFile
+from PIL import Image, ImageDraw
+from dataclasses import dataclass
 
-ITERATIONS = 400
-NUM_RANDOM_RECTS = 200
-HILL_CLIMBING_STEPS = 200
-CLIMB_MOD = 5
-COLOUR_SAMPLE_SIZE = (8, 8)
-ALPHA_MIN = 100
-ALPHA_MAX = 255
-SAVE_EVERY = 100
+NUM_STEPS               = 500
+NUM_HILL_CLIMBING_STEPS = 1000
+COLOUR_MAX_CHANGE       = 30
+POSITION_MAX_CHANGE     = 30
+A_MIN                   = 100
+A_MAX                   = 255
+VERBOSE_OUTPUT          = True
+IMAGE_NAME              = "image.png" # target image
 
-Attempt = namedtuple("Attempt", ["points", "colour", "image", "distance"])
+@dataclass
+class Rect:
+    ax: int
+    ay: int
+    bx: int
+    by: int
+    r:  int
+    g:  int
+    b:  int
+    a:  int
 
-def draw_optimised_rect(base, target, pallete):
-    improved = False
-    closest_so_far = base
+    def copy(self):
+        return Rect(**self.__dict__)
 
-    # Tries the given shape and replaces the closest if it is closer
-    def draw_and_test(points, colour):
-        # Draw onto a fully transparent image
-        overlay = Image.new("RGBA", base.image.size, (0,0,0,0))
-        draw    = ImageDraw.Draw(overlay)
-        draw.rectangle(points, colour)
+    def mutate_colour(self):
+        self.r = clamp(self.r + random_delta(COLOUR_MAX_CHANGE), 0, 255)
+        self.g = clamp(self.g + random_delta(COLOUR_MAX_CHANGE), 0, 255)
+        self.b = clamp(self.b + random_delta(COLOUR_MAX_CHANGE), 0, 255)
+        self.a = clamp(self.a + random_delta(COLOUR_MAX_CHANGE), A_MIN, A_MAX)
 
-        # Combine the overlay with the base and calculate the new distance
-        new_image    = Image.alpha_composite(base.image, overlay)
-        as_array     = np.array(new_image, dtype=np.uint32)
-        new_distance = np.square(target - as_array).sum()
+    def mutate_position(self, mx, my):
+        self.ax = clamp(self.ax + random_delta(POSITION_MAX_CHANGE), 0, mx)
+        self.ay = clamp(self.ay + random_delta(POSITION_MAX_CHANGE), 0, my)
+        self.bx = clamp(self.bx + random_delta(POSITION_MAX_CHANGE), 0, mx)
+        self.by = clamp(self.by + random_delta(POSITION_MAX_CHANGE), 0, my)
 
-        nonlocal closest_so_far, improved
-        if new_distance < closest_so_far.distance:
-            closest_so_far = Attempt(points, colour, new_image, new_distance)
-            improved = True
+def random_delta(x):
+    return rnd.randint(-x, +x)
 
-    for _ in range(NUM_RANDOM_RECTS):
-        # Calculate a random colour and set of points
-        alpha   = random.randint(ALPHA_MIN, ALPHA_MAX)
-        r, g, b = random.choice(pallete)
-        colour  = (r, g, b, alpha)
+def clamp(v, min_v, max_v):
+    return max(min_v, min(max_v, v))
 
-        w, h = base.image.size
-        points  = [
-            (random.randint(0, w), random.randint(0, h)) 
-            for _ in range(2)]
-        draw_and_test(points, colour)
+def get_distance(target, image):
+    as_array = np.array(image, dtype=np.uint32)
+    return np.square(target - as_array).sum()
 
-    if improved:
-        for _ in range(HILL_CLIMBING_STEPS):
-            # Modify the points very slightly to find the most optimal version
-            change = lambda x : x + random.randint(-CLIMB_MOD, CLIMB_MOD)
-            points = [(change(x), change(y)) for x, y in closest_so_far.points]
-            draw_and_test(points, closest_so_far.colour)
+def draw(current, target, rect):
+    # Draw the rect to a transparent image
+    colour  = (rect.r, rect.g, rect.b, rect.a)
+    points  = [(rect.ax, rect.ay), (rect.bx, rect.by)]
+    overlay = Image.new("RGBA", current.size, (0, 0, 0, 0))
+    draw    = ImageDraw.Draw(overlay)
+    draw.rectangle(points, colour)
 
-    return closest_so_far, improved
+    # Combine the overlay with the base and calculate the new distance
+    new_image    = Image.alpha_composite(current, overlay)
+    new_distance = get_distance(target, new_image)
+    return new_image, new_distance
 
+def next_state(current, target):
+    width, height = current.size
+
+    # Draw a random rectangle
+    rect = Rect(
+        ax = rnd.randint(0, width), 
+        ay = rnd.randint(0, width), 
+        bx = rnd.randint(0, width), 
+        by = rnd.randint(0, width), 
+        r  = rnd.randint(0, 255),  
+        g  = rnd.randint(0, 255),  
+        b  = rnd.randint(0, 255),  
+        a  = rnd.randint(A_MIN, A_MAX)
+    )
+    image, distance = draw(current, target, rect)
+
+    # Optimise the rectangle 
+    col = lambda r : r.mutate_colour()
+    pos = lambda r : r.mutate_position(width-1, height-1)
+
+    for mutate in [col, pos]:
+        for i in range(NUM_HILL_CLIMBING_STEPS):
+            # Copy the rect and mutate it
+            copy = rect.copy()
+            mutate(copy)
+            mutation_image, mutation_distance = draw(current, target, copy)
+            
+            # If it's better, accept it
+            if mutation_distance < distance:
+                image    = mutation_image
+                distance = mutation_distance
+                rect     = copy
+
+    return image, distance
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: [python] geneticalg.py [image name]")
-        return
-
-    path          = os.path.join(sys.path[0], "")
-    target_image  = Image.open(path + sys.argv[1]).convert("RGBA")
-    width, height = target_image.size
+    target_image  = Image.open(IMAGE_NAME).convert("RGBA")
     target        = np.array(target_image, dtype=np.uint32)
 
-    # Get the dominant colours in the image.
-    # Image.getcolors() returns a list of items in format 
-    # (count, (r, g, b, a)), so convert it to a list of (r, g, b)
-    downsized = target_image.resize(COLOUR_SAMPLE_SIZE, resample=Image.NEAREST)
-    pallete = [c[1][:3] for c in downsized.getcolors()]
+    # Start with a blank image and infinite distance
+    image    = Image.new("RGBA", target_image.size, (255, 255, 255, 255))
+    distance = get_distance(target, image)
+    image.save("new0.png")
 
-    # Get the background colour (average of pallete)
-    r, g, b = tuple(map(lambda x: int(np.mean(x)), zip(*pallete)))
-    background_color = (r, g, b, 255)
+    for step in range(NUM_STEPS):
+        print(f"step {step}")
+        print(f"starting with distance of {distance}")
+ 
+        new_image, new_distance = next_state(image, target)
 
-    # Set up the initial image with a blank image and infinite distance
-    blank   = Image.new("RGBA", target_image.size, background_color)
-    closest = Attempt(None, None, blank, math.inf)
+        if new_distance < distance:
+            print(f"distance decreased by {distance-new_distance}")
+            print(f"new distance is {new_distance}")
 
-    for generation in range(ITERATIONS):
-        closest, improved = draw_optimised_rect(closest, target, pallete)
-        msg = "Distance decreased!" if improved else "Distance unchanged!"
-        print(f"Generation {generation}: {msg} Dist: {closest.distance}")
+            distance = new_distance
+            image    = new_image
+            image.save(f"new{step+1}.png")
+        else:
+            print("failed to decrease distance, new state rejected")
 
-        if generation % SAVE_EVERY == 0:
-            closest.image.save(f"{path}new{generation}.png")
-
-    closest.image.save(path + "new_final.png")
-
-
-if __name__ == "__main__":
-    main()
+main()
