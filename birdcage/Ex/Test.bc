@@ -1,0 +1,4 @@
+string = "Hello, World!"
+print string
+print (mockingbird string)
+thrush string print

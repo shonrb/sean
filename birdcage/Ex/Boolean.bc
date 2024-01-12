@@ -1,0 +1,26 @@
+1 = "True"
+0 = "False"
+
+true = kestrel
+false = kite
+print (false 1 0)
+print (true  1 0)
+
+print "not"
+not = finch kestrel kite
+print ((not false) 1 0) 
+print ((not true) 1 0)
+
+print "or"
+or = thrush kestrel
+print ((or false false) 1 0)
+print ((or false true)  1 0)
+print ((or true false)  1 0)
+print ((or true true)   1 0)
+
+print "and"
+and = robin false
+print ((and false false) 1 0)
+print ((and false true)  1 0)
+print ((and true false)  1 0)
+print ((and true true)   1 0)
