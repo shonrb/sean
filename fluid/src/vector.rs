@@ -79,33 +79,52 @@ impl<const D: usize> Index<usize> for Vector<D> {
 
 
 macro_rules! define_operator {
-    ($tname: tt, $fname: tt, $op: tt) => {
-        impl<const D: usize> $tname <Vector<D>> for Vector<D> {
-            type Output = Self;
-            fn $fname (self, other: Self) -> Self {
-                let mut x: [f64; D] = [0.0; D];
-                for i in 0 .. D {
-                    x[i] = self[i] $op other[i];
-                }
-                Self::new(x)
+($tname: tt, $fname: tt, $op: tt) => {
+    impl<const D: usize> $tname <Vector<D>> for Vector<D> {
+        type Output = Self;
+        fn $fname (self, other: Self) -> Self {
+            let mut x: [f64; D] = [0.0; D];
+            for i in 0 .. D {
+                x[i] = self[i] $op other[i];
             }
-        }
-
-        impl<const D: usize> $tname <f64> for Vector<D> {
-            type Output = Self;
-            fn $fname (self, other: f64) -> Self {
-                let mut x: [f64; D] = [0.0; D];
-                for i in 0 .. D {
-                    x[i] = self[i] $op other;
-                }
-                Self::new(x)
-            }
+            Self::new(x)
         }
     }
-}
+
+    impl<const D: usize> $tname <f64> for Vector<D> {
+        type Output = Self;
+        fn $fname (self, other: f64) -> Self {
+            let mut x: [f64; D] = [0.0; D];
+            for i in 0 .. D {
+                x[i] = self[i] $op other;
+            }
+            Self::new(x)
+        }
+    }
+}}
+
+macro_rules! define_op_assign {
+($tname: tt, $fname: tt, $op: tt) => {
+    impl<const D: usize> $tname for Vector<D> {
+        fn $fname (&mut self, other: Self) {
+            *self = *self $op other;
+        }
+    }
+
+    impl<const D: usize> $tname <f64> for Vector<D> {
+        fn $fname (&mut self, other: f64) {
+            *self = *self $op other;
+        }
+    }
+}}
 
 define_operator!{Add, add, +}
 define_operator!{Sub, sub, -}
 define_operator!{Mul, mul, *}
 define_operator!{Div, div, /}
+
+define_op_assign!{AddAssign, add_assign, +}
+define_op_assign!{SubAssign, sub_assign, -}
+define_op_assign!{MulAssign, mul_assign, *}
+define_op_assign!{DivAssign, div_assign, /}
 

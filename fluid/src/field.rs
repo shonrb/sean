@@ -84,29 +84,5 @@ pub fn bilerp<T: Quantity>(field: &DiscreteField<T>, p: Vector2) -> T {
     fxy
 }
 
-pub fn relax<T: Quantity>(
-    x: &mut DiscreteField<T>, 
-    b: &DiscreteField<T>, 
-    alpha: f64, 
-    beta: f64,
-    gamma: f64,
-    iter_count: usize
-) {
-    // TODO: Better linear solver. FFT or conjugate gradient
-    for _ in 0 .. iter_count {
-        for i in 1 .. x.width-1 {
-            for j in 1 .. x.height-1 {
-                let neighbours 
-                    = x[i+1][j] 
-                    + x[i-1][j] 
-                    + x[i][j+1] 
-                    + x[i][j-1];
-                let div = b[i][j];
-                let np = (neighbours * alpha + div * beta) / gamma;
-                x[i][j] = np;
-            }
-        }
-    }
-}
 
 

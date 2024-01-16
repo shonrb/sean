@@ -39,7 +39,8 @@ type SFVec2 = sfml::system::Vector2f;
 enum RenderType {
     Velocity,
     Pressure,
-    Density
+    Density,
+    Vorticity
 }
 
 struct Main {
@@ -110,11 +111,16 @@ impl Main {
                     self.mouse = (x, y);
                 },
                 Event::KeyPressed { code, .. } => {
+                    self.solver.need_vort = false;
                     match code {
                         Key::Space => self.paused = !self.paused,
                         Key::Num1 => self.render = RenderType::Density,
                         Key::Num2 => self.render = RenderType::Velocity,
                         Key::Num3 => self.render = RenderType::Pressure,
+                        Key::Num4 => {
+                            self.render = RenderType::Vorticity;
+                            self.solver.need_vort = true;
+                        },
                         _ => {}
                     }
                 },
@@ -151,9 +157,10 @@ impl Main {
         self.window.clear(Color::BLACK);
 
         match self.render {
-            RenderType::Density  => self.render_density(),
-            RenderType::Velocity => self.render_velocity(),
-            RenderType::Pressure => self.render_pressure(),
+            RenderType::Density   => self.render_density(),
+            RenderType::Velocity  => self.render_velocity(),
+            RenderType::Pressure  => self.render_pressure(),
+            RenderType::Vorticity => self.render_vorticity()
         }
     }
     
@@ -208,6 +215,18 @@ impl Main {
     fn render_density(&mut self) {
         self.draw_field(|m| &m.solver.density , |d: Vector3| -> Color {
             Main::make_colour(d[0], d[1], d[2]) 
+        });
+    }
+
+    fn render_vorticity(&mut self) {
+        const MIN: f64 = -0.5;
+        const MAX: f64 = 0.5;
+        self.draw_field(|m| &m.solver.vorticity, |p: f64| -> Color {
+            Color::rgb(
+                ((1.0 - p.max(0.0) / MAX) * 255.0) as u8,
+                ((1.0 - p.min(0.0) / MIN) * 255.0) as u8,
+                0u8,
+            )
         });
     }
 
