@@ -2,7 +2,7 @@
 --- Settings
 -------------------------------------------------------------------------------
 vim.opt.guicursor = ""
-vim.opt.number = true
+vim.opt.number = false
 vim.opt.mouse = 'a'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -96,14 +96,12 @@ vim.keymap.set("n", "<leader>t1", ":tabN<cr>")
 vim.api.nvim_set_keymap('i', '<C-BS>', '<C-W>', {noremap = true})
 
 -- Buffer handling
-vim.keymap.set("n", "<leader>q", function()
-    if vim.bo.buftype == "terminal" then
-        vim.cmd("q!")
-    else
-        vim.cmd("x")
-    end
-end)
-vim.keymap.set("n", "<leader>s", ":w!<cr>")
+vim.keymap.set("n", "<leader>q",  ":x<cr>")
+vim.keymap.set("n", "<leader>x", ":q!<cr>")
+vim.keymap.set("n", "<leader>s",  ":w!<cr>")
+
+-- Quick term
+vim.keymap.set("n", "<leader>,",  ":ToggleTerm direction=float<cr>")
 
 -- Set indent
 vim.api.nvim_create_user_command("Indent", (function(arg)
@@ -155,8 +153,6 @@ lazy.opts = {}
 
 lazy.setup({
   {'comfysage/evergarden'},
-  { "ellisonleao/gruvbox.nvim" },
-  {"xero/miasma.nvim"},
   {'nvim-lualine/lualine.nvim'},
   {'kyazdani42/nvim-tree.lua'},
   {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
@@ -168,6 +164,7 @@ lazy.setup({
   {"kwkarlwang/bufresize.nvim"},
   {'nvim-lua/plenary.nvim'},
   {'lewis6991/gitsigns.nvim'},
+  {'akinsho/toggleterm.nvim', version = "*", config = true}
 })
 
 -------------------------------------------------------------------------------
@@ -214,24 +211,13 @@ require("evergarden").setup {
         keyword = {},
     },
 }
-require("gruvbox").setup({
-  bold = false,
-  italic = {
-    strings = false,
-    emphasis = false,
-    comments = true,
-    operators = false,
-    folds = false,
-  },
-  transparent_mode = true,
-})
 vim.opt.termguicolors = true
-vim.cmd.colorscheme('gruvbox')
+vim.cmd.colorscheme('evergarden')
 
 -- lualine
 require('lualine').setup({
   options = {
-    theme = 'gruvbox',
+    theme = 'nord',
     icons_enabled = true,
     component_separators = '|',
     section_separators = '',
@@ -254,6 +240,10 @@ require('lualine').setup({
   },
 })
 
+-- Toggleterm
+require("toggleterm").setup {
+}
+
 -- Telescope
 require("telescope").setup {}
 local builtin = require "telescope.builtin"
@@ -265,18 +255,3 @@ vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
 vim.keymap.set("n", "<leader>T", builtin.colorscheme, {})
 
 require("bufresize").setup()
-
------
----- Comment.nvim
------
---require('Comment').setup({})
---
----- toggleterm
------
----- See :help toggleterm-roadmap
---require('toggleterm').setup({
---  open_mapping = '<C-g>',
---  direction = 'horizontal',
---  shade_terminals = true
---})
---
